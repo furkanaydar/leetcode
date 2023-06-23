@@ -2,16 +2,21 @@ package grind75.Week3;
 
 public class HouseRobber {
 
-    public int rob(int[] nums) {
-        int[][] d = new int[nums.length][2];
-        d[0][0] = 0;
-        d[0][1] = nums[0];
+    public static int rob(int[] nums) {
+        int r=0;
+        int[] d = new int[nums.length];
+        d[0]=nums[0];
+        d[1]=Math.max(nums[0], nums[1]);
 
-        for (int i=1; i<nums.length; i++) {
-            d[i][1] = Math.max(d[i-1][0]+nums[i], d[i-1][1]);
-            d[i][0] = Math.max(d[i-1][0], d[i-1][1]);
+        for (int i=2; i<nums.length; i++) {
+            d[i] = Math.max(nums[i]+d[i-2], d[i-1]);
+            r=Math.max(r, d[i]);
         }
 
-        return Math.max(d[nums.length-1][0], d[nums.length-1][1]);
+        return r;
+    }
+
+    public static void main(String[] args) {
+        rob(new int[] {1,2,3,1});
     }
 }
