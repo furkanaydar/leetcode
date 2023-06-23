@@ -6,8 +6,8 @@ import java.util.List;
 public class AllAnagramsInString {
 
     public static void compareAndAdd(String s, String p, int[] cs, int[] cp, List<Integer> r, int start) {
-        for (int j=0; j<p.length(); j++) {
-            if (cs[p.charAt(j)-97] != cp[p.charAt(j)-97]) {
+        for (int j=0; j<26; j++) {
+            if (cs[j] != cp[j]) {
                 return;
             }
         }
