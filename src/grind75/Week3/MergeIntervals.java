@@ -2,12 +2,11 @@ package grind75.Week3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class MergeIntervals {
 
-    static class Entry implements Comparable<Entry> {
+    class Entry implements Comparable<Entry> {
         int s, e;
 
         public Entry(int s, int e) {
@@ -25,7 +24,7 @@ public class MergeIntervals {
         }
     }
 
-    public static int[][] merge(int[][] intervals) {
+    public int[][] merge(int[][] intervals) {
         List<Entry> l = new ArrayList<>();
 
         Arrays.sort(intervals, (o1, o2) -> o1[0] == o2[0] ? o1[1]-o2[1] : o1[0]-o2[0]);
@@ -48,9 +47,5 @@ public class MergeIntervals {
         }
 
         return res;
-    }
-
-    public static void main(String[] args) {
-        merge(new int[][]{{1, 4}, {0, 2}, {3, 5}});
     }
 }
