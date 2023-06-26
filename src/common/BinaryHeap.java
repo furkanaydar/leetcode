@@ -1,8 +1,8 @@
 package common;
 
 public class BinaryHeap<T extends Comparable<T>> {
-    T[] elements;
-    int size;
+    private T[] elements;
+    private int size;
 
     public BinaryHeap() {
         elements = (T[]) new Comparable[8];
@@ -152,12 +152,12 @@ public class BinaryHeap<T extends Comparable<T>> {
         bh.insert(new MaxHeapElem(3));
         bh.insert(new MaxHeapElem(0));
         bh.insert(new MaxHeapElem(27));
-        assert bh.peek().val == 27;
+        assertEquals(bh.peek().val, 27);
         bh.delete();
-        assert bh.peek().val == 8;
+        assertEquals(bh.peek().val, 8);
         bh.delete();
-        assert bh.peek().val == 4;
-        assert bh.size == 3;
+        assertEquals(bh.peek().val, 4);
+        assertEquals(bh.size(), 3);
         bh.insert(new MaxHeapElem(22));
         bh.insert(new MaxHeapElem(22));
         bh.insert(new MaxHeapElem(10));
@@ -165,11 +165,17 @@ public class BinaryHeap<T extends Comparable<T>> {
         bh.insert(new MaxHeapElem(55));
         bh.insert(new MaxHeapElem(44));
         int deleted = bh.delete().val;
-        assert deleted == 55;
+        assertEquals(deleted, 55);
         bh.delete();
         bh.delete();
         bh.delete();
-        assert bh.peek().val == 22;
+        assertEquals(bh.peek().val, 22);
+    }
+
+    public static void assertEquals(int x, int y) {
+        if (x != y) {
+            throw new RuntimeException();
+        }
     }
 
     public static void assertMinHeap() {
@@ -179,12 +185,12 @@ public class BinaryHeap<T extends Comparable<T>> {
         bh.insert(3);
         bh.insert(0);
         bh.insert(27);
-        assert bh.peek() == 0;
+        assertEquals(bh.peek(), 0);
         bh.delete();
-        assert bh.peek() == 3;
+        assertEquals(bh.peek(), 3);
         bh.delete();
-        assert bh.peek() == 4;
-        assert bh.size == 3;
+        assertEquals(bh.peek(), 4);
+        assertEquals(bh.size(), 3);
         bh.insert(22);
         bh.insert(22);
         bh.insert(10);
@@ -192,11 +198,20 @@ public class BinaryHeap<T extends Comparable<T>> {
         bh.insert(55);
         bh.insert(44);
         int deleted = bh.delete();
-        assert deleted == 4;
+        assertEquals(deleted, 4);
         bh.delete();
         bh.delete();
         bh.delete();
-        assert bh.peek() == 22;
+        assertEquals(bh.peek(), 22);
+        assertEquals(bh.size(), 5);
+        bh.delete();
+        bh.delete();
+        bh.delete();
+        assertEquals(bh.peek(), 44);
+        bh.delete();
+        assertEquals(bh.peek(), 55);
+        bh.delete();
+        assertEquals(bh.size(), 0);
     }
 
     public static void main(String[] args) {
