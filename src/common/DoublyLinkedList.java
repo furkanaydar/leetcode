@@ -2,12 +2,35 @@ package common;
 
 public class DoublyLinkedList<T> {
 
-    DoublyLinkedListNode<T> head;
-    DoublyLinkedListNode<T> tail;
+    public class DoublyLinkedListNode {
+        T val;
+        DoublyLinkedListNode next;
+        DoublyLinkedListNode prev;
+
+        public DoublyLinkedListNode(T val) {
+            this.val = val;
+            this.next = this.prev = null;
+        }
+
+        public T getVal() {
+            return this.val;
+        }
+
+        public void setVal(T val) {
+            this.val = val;
+        }
+    }
+
+    DoublyLinkedListNode head;
+    DoublyLinkedListNode tail;
     int listLength=0;
 
+    public DoublyLinkedListNode createNode(T val) {
+        return new DoublyLinkedListNode(val);
+    }
+
     public void insertToBeginning(T val) {
-        DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<>(val);
+        DoublyLinkedListNode newNode = new DoublyLinkedListNode(val);
         if (listLength > 0) {
             newNode.next = head;
             head.prev = newNode;
@@ -22,8 +45,7 @@ public class DoublyLinkedList<T> {
         listLength++;
     }
 
-    public void insertToEnd(T val) {
-        DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<>(val);
+    public void insertToEnd(DoublyLinkedListNode newNode) {
         if (listLength > 0) {
             tail.next = newNode;
             newNode.prev = tail;
@@ -38,15 +60,19 @@ public class DoublyLinkedList<T> {
         listLength++;
     }
 
+    public void insertToEnd(T val) {
+        insertToEnd(new DoublyLinkedListNode(val));
+    }
+
     public void insertAfterIndex(int index, T val) {
-        DoublyLinkedListNode<T> node = getNode(index);
+        DoublyLinkedListNode node = getNode(index);
 
         if (node == null) {
             throw new RuntimeException();
         }
 
-        DoublyLinkedListNode<T> nextNode = node.next;
-        DoublyLinkedListNode<T> newNode = new DoublyLinkedListNode<>(val);
+        DoublyLinkedListNode nextNode = node.next;
+        DoublyLinkedListNode newNode = new DoublyLinkedListNode(val);
         node.next = newNode;
         newNode.prev = node;
 
@@ -59,7 +85,7 @@ public class DoublyLinkedList<T> {
     }
 
     public T get(int index) {
-        DoublyLinkedListNode<T> node = getNode(index);
+        DoublyLinkedListNode node = getNode(index);
         return node == null ? null : node.val;
     }
 
@@ -111,8 +137,27 @@ public class DoublyLinkedList<T> {
         return removedVal;
     }
 
+    public T removeByReference(DoublyLinkedListNode obj) {
+        if (obj == null) {
+            throw new RuntimeException();
+        }
+
+        if (obj.equals(head)) {
+            return removeFromBeginning();
+        }
+
+        if (obj.equals(tail)) {
+            return removeFromEnd();
+        }
+
+        obj.prev.next = obj.next;
+        obj.next.prev = obj.prev;
+        listLength--;
+        return obj.val;
+    }
+
     public T removeNthIndex(int index) {
-        DoublyLinkedListNode<T> node = getNode(index);
+        DoublyLinkedListNode node = getNode(index);
 
         if (node == null) {
             throw new RuntimeException();
@@ -126,14 +171,14 @@ public class DoublyLinkedList<T> {
             return removeFromEnd();
         }
 
-        DoublyLinkedListNode<T> nextNode = node.next;
+        DoublyLinkedListNode nextNode = node.next;
         nextNode.prev = node.prev;
         node.prev.next = nextNode;
         return node.val;
     }
 
     public int firstOccurrence(T val) {
-        DoublyLinkedListNode<T> tmp = head;
+        DoublyLinkedListNode tmp = head;
         int index = -1;
 
         while (tmp != null) {
@@ -152,12 +197,12 @@ public class DoublyLinkedList<T> {
         return listLength;
     }
 
-    private DoublyLinkedListNode<T> getNode(int index) {
+    private DoublyLinkedListNode getNode(int index) {
         if (index < 0 || index >= listLength) {
             throw new RuntimeException();
         }
 
-        DoublyLinkedListNode<T> tmp = head;
+        DoublyLinkedListNode tmp = head;
         int curIndex = 0;
 
         while (tmp != null && curIndex<index) {
@@ -166,17 +211,6 @@ public class DoublyLinkedList<T> {
         }
 
         return curIndex == index && tmp != null ? tmp : null;
-    }
-
-    class DoublyLinkedListNode<U> {
-        U val;
-        DoublyLinkedListNode<U> next;
-        DoublyLinkedListNode<U> prev;
-
-        public DoublyLinkedListNode(U val) {
-            this.val = val;
-            this.next = this.prev = null;
-        }
     }
 
     public static void main(String[] args) {
